@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class ItemDto {
-    private final long id;
+    private final Long id;
     @NotEmpty(message = "name cannot be empty")
     private final String name;
     @NotEmpty(message = "description cannot be empty")

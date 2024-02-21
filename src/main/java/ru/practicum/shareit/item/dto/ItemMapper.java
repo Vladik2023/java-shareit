@@ -1,15 +1,17 @@
 package ru.practicum.shareit.item.dto;
 
-
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import ru.practicum.shareit.item.model.Item;
 
-public class ItemMapper {
-    public static ItemDto convertToDto(Item item) {
-        return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.isAvailableToRent());
-    }
+@Mapper
+public interface ItemMapper {
+    ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
-    public static Item convertToEntity(ItemDto itemDto, long ownerId) {
-        return new Item(itemDto.getId(), itemDto.getName(), itemDto.getDescription(), itemDto.getIsAvailableToRent(),
-                ownerId);
-    }
+    @Mapping(target = "isAvailableToRent", source = "isAvailableToRent")
+    ItemDto convertToDto(Item item);
+
+    @Mapping(target = "isAvailableToRent", source = "isAvailableToRent")
+    Item convertToEntity(ItemDto itemDto, Long ownerId);
 }

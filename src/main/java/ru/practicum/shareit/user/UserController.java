@@ -1,16 +1,17 @@
 package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.dto.UserMapper;
+import ru.practicum.shareit.user.dto.UserMapperImpl;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static ru.practicum.shareit.user.dto.UserMapper.*;
+import static ru.practicum.shareit.user.dto.UserMapperImpl.*;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -19,30 +20,34 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User user = convertToEntity(userDto);
-        return convertToDto(userService.createUser(user));
+        return ResponseEntity.ok().body(convertToDto(userService.createUser(user)));
     }
 
     @GetMapping
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers().stream()
-                .map(UserMapper::convertToDto)
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> userDtos = userService.getAllUsers().stream()
+                .map(UserMapperImpl::convertToDto)
                 .collect(Collectors.toList());
+        return ResponseEntity.ok().body(userDtos);
     }
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable long id) {
-        return convertToDto(userService.getUserById(id));
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        UserDto userDto = convertToDto(userService.getUserById(id));
+        return ResponseEntity.ok().body(userDto);
     }
 
     @PatchMapping("/{id}")
-    public UserDto updateUser(@PathVariable long id, @RequestBody Map<String, String> formParams) {
-        return convertToDto(userService.updateUser(id, formParams));
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody Map<String, String> formParams) {
+        UserDto userDto = convertToDto(userService.updateUser(id, formParams));
+        return ResponseEntity.ok().body(userDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

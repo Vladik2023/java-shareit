@@ -8,21 +8,23 @@ import ru.practicum.shareit.user.User;
 
 import java.util.*;
 
+import java.util.Optional;
+
 @Slf4j
 @Repository
 public class UserRepository implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
-    private int id = 0;
+    private Long id = 0L;
 
     @Override
-    public User createUser(User user) {
+    public Optional<User> createUser(User user) {
         if (getAllEmails().contains(user.getEmail())) {
-            log.error("User with email = {} is already exist", user.getEmail());
-            throw new AlreadyExistException(String.format("User with email = %s is already exist", user.getEmail()));
+            log.error("Пользователь с email = {} уже существует", user.getEmail());
+            throw new AlreadyExistException(String.format("Пользователь с email = %s уже существует", user.getEmail()));
         }
         user.setId(++id);
         users.put(user.getId(), user);
-        return user;
+        return Optional.of(user);
     }
 
     @Override
@@ -31,19 +33,19 @@ public class UserRepository implements UserStorage {
     }
 
     @Override
-    public User getUserById(long id) {
+    public Optional<User> getUserById(Long id) {
         if (!users.containsKey(id)) {
-            log.error("User with id = {} not found", id);
-            throw new NotFoundException(String.format("User with id = %d not found", id));
+            log.error("Пользователь с id = {} не найден", id);
+            return Optional.empty();
         }
-        return users.get(id);
+        return Optional.of(users.get(id));
     }
 
     @Override
-    public User updateUser(long id, Map<String, String> updatedParams) {
+    public Optional<User> updateUser(Long id, Map<String, String> updatedParams) {
         if (!users.containsKey(id)) {
-            log.error("User with id = {} not found", id);
-            throw new NotFoundException(String.format("User with id = %d not found", id));
+            log.error("Пользователь с id = {} не найден", id);
+            return Optional.empty();
         }
         User user = users.get(id);
         for (String key : updatedParams.keySet()) {
@@ -51,8 +53,8 @@ public class UserRepository implements UserStorage {
                 case "email":
                     String email = updatedParams.get("email");
                     if (getAllEmails().contains(email) && !user.getEmail().equals(email)) {
-                        log.error("Other user with email = {} is already exist", user.getEmail());
-                        throw new AlreadyExistException(String.format("Other user with email = %s is already exist", user.getEmail()));
+                        log.error("Другой пользователь с email = {} уже существует", user.getEmail());
+                        throw new AlreadyExistException(String.format("Другой пользователь с email = %s уже существует", user.getEmail()));
                     }
                     user.setEmail(email);
                     break;
@@ -61,11 +63,11 @@ public class UserRepository implements UserStorage {
                     break;
             }
         }
-        return user;
+        return Optional.of(user);
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(Long id) {
         users.remove(id);
     }
 
