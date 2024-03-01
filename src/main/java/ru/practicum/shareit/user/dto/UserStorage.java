@@ -4,7 +4,6 @@ import ru.practicum.shareit.user.User;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface UserStorage {
     User createUser(User user);
