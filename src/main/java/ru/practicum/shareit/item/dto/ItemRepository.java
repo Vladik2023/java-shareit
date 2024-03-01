@@ -27,7 +27,7 @@ public class ItemRepository implements ItemStorage {
     @Override
     public List<Item> getAllItemsForOwner(Long ownerId) {
         return items.values().stream()
-                .filter(item -> item.getOwnerId() == ownerId)
+                .filter(item -> item.getOwnerId().equals(ownerId))
                 .collect(Collectors.toList());
     }
 
