@@ -39,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item updateItem(Long id, Map<String, String> updatedParams, Long ownerId) {
         userStorage.getUserById(ownerId);
-        if (ownerId != itemStorage.getItemById(id).getOwnerId()) {
+        if (!ownerId.equals(itemStorage.getItemById(id).getOwnerId())) {
             log.error("User with id = {} cannot update item with id = {}. He is not owner", ownerId, id);
             throw new NotFoundException(
                     String.format("User with id = %d cannot update item with id = %d. He is not owner", ownerId, id)
