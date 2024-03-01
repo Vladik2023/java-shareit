@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Data
 public class ItemRequest {
-    private int id;
+    private Long id;
     @NotNull
     private String itemName;
     private final List<Long> offerOwnerIds;

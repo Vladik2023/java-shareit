@@ -34,12 +34,18 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item getItemById(Long id) {
         return itemStorage.getItemById(id);
+    public Item getItemById(Long id) {
+        return itemStorage.getItemById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Item with id = %d not found", id)));
     }
 
     @Override
     public Item updateItem(Long id, Map<String, String> updatedParams, Long ownerId) {
         userStorage.getUserById(ownerId);
-        if (ownerId != itemStorage.getItemById(id).getOwnerId()) {
+        Item item = itemStorage.getItemById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Item with id = %d not found", id)));
+
+        if (ownerId != item.getOwnerId()) {
             log.error("User with id = {} cannot update item with id = {}. He is not owner", ownerId, id);
             throw new NotFoundException(
                     String.format("User with id = %d cannot update item with id = %d. He is not owner", ownerId, id)
