@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface UserStorage {
-    Optional<User> createUser(User user);
+    User createUser(User user);
 
     List<User> getAllUsers();
 
-    Optional<User> getUserById(Long id);
+    User getUserById(Long id);
 
-    Optional<User> updateUser(Long id, Map<String, String> updatedParams);
+    User updateUser(Long id, Map<String, String> updatedParams);
 
     void deleteUser(Long id);
 }

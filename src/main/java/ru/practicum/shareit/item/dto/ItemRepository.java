@@ -3,12 +3,12 @@ package ru.practicum.shareit.item.dto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -32,12 +32,12 @@ public class ItemRepository implements ItemStorage {
     }
 
     @Override
-    public Optional<Item> getItemById(Long id) {
+    public Item getItemById(Long id) {
         if (!items.containsKey(id)) {
             log.error("Item with id = {} not found", id);
-            return Optional.empty();
+            throw new NotFoundException(String.format("Item with id = %d not found", id));
         }
-        return Optional.of(items.get(id));
+        return items.get(id);
     }
 
     @Override
