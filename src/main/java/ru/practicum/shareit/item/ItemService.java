@@ -8,11 +8,11 @@ import java.util.Map;
 public interface ItemService {
     Item createItem(Item item);
 
-    List<Item> getAllItemsForOwner(long ownerId);
+    List<Item> getAllItemsForOwner(Long ownerId);
 
-    Item getItemById(long id);
+    Item getItemById(Long id);
 
-    Item updateItem(long id, Map<String, String> updatedParams, long ownerId);
+    Item updateItem(Long id, Map<String, String> updatedParams, Long ownerId);
 
     List<Item> searchItems(String text);
 }

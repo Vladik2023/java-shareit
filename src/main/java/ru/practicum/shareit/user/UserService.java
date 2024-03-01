@@ -19,11 +19,11 @@ public class UserService {
         return userStorage.getAllUsers();
     }
 
-    public User getUserById(long id) {
+    public User getUserById(Long id) {
         return userStorage.getUserById(id);
     }
 
-    public User updateUser(long id, Map<String, String> userUpdatedParams) {
+    public User updateUser(Long id, Map<String, String> userUpdatedParams) {
         return userStorage.updateUser(id, userUpdatedParams);
     }
 

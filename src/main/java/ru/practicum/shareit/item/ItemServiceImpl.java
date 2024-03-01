@@ -26,18 +26,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> getAllItemsForOwner(long ownerId) {
+    public List<Item> getAllItemsForOwner(Long ownerId) {
         userStorage.getUserById(ownerId);
         return itemStorage.getAllItemsForOwner(ownerId);
     }
 
     @Override
-    public Item getItemById(long id) {
+    public Item getItemById(Long id) {
         return itemStorage.getItemById(id);
     }
 
     @Override
-    public Item updateItem(long id, Map<String, String> updatedParams, long ownerId) {
+    public Item updateItem(Long id, Map<String, String> updatedParams, Long ownerId) {
         userStorage.getUserById(ownerId);
         if (ownerId != itemStorage.getItemById(id).getOwnerId()) {
             log.error("User with id = {} cannot update item with id = {}. He is not owner", ownerId, id);

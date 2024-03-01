@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @RequiredArgsConstructor
 @Data
 public class UserDto {
-    private final long id;
+    private final Long id;
     @NotEmpty(message = "email cannot be empty")
     @Email(message = "email is not correct")
     private final String email;

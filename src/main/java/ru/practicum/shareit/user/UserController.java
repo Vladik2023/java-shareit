@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
@@ -19,30 +20,32 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User user = convertToEntity(userDto);
-        return convertToDto(userService.createUser(user));
+        return ResponseEntity.ok().body(convertToDto(userService.createUser(user))); // Возвращение ResponseEntity
     }
 
     @GetMapping
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers().stream()
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.getAllUsers().stream()
                 .map(UserMapper::convertToDto)
                 .collect(Collectors.toList());
+        return ResponseEntity.ok().body(users); // Возвращение ResponseEntity
     }
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable long id) {
-        return convertToDto(userService.getUserById(id));
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(convertToDto(userService.getUserById(id))); // Возвращение ResponseEntity
     }
 
     @PatchMapping("/{id}")
-    public UserDto updateUser(@PathVariable long id, @RequestBody Map<String, String> formParams) {
-        return convertToDto(userService.updateUser(id, formParams));
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody Map<String, String> formParams) {
+        return ResponseEntity.ok().body(convertToDto(userService.updateUser(id, formParams))); // Возвращение ResponseEntity
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.noContent().build(); // Возвращение ResponseEntity
     }
 }

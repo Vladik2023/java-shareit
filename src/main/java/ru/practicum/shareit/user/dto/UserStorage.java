@@ -10,9 +10,9 @@ public interface UserStorage {
 
     List<User> getAllUsers();
 
-    User getUserById(long id);
+    User getUserById(Long id);
 
-    User updateUser(long id, Map<String, String> updatedParams);
+    User updateUser(Long id, Map<String, String> updatedParams);
 
-    void deleteUser(long id);
+    void deleteUser(Long id);
 }

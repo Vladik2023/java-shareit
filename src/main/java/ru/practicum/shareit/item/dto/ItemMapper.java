@@ -8,7 +8,7 @@ public class ItemMapper {
         return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.isAvailableToRent());
     }
 
-    public static Item convertToEntity(ItemDto itemDto, long ownerId) {
+    public static Item convertToEntity(ItemDto itemDto, Long ownerId) {
         return new Item(itemDto.getId(), itemDto.getName(), itemDto.getDescription(), itemDto.getIsAvailableToRent(),
                 ownerId);
     }

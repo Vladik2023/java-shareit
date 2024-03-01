@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 @Data
 public class User {
-    private long id;
+    private Long id;
     @NotEmpty(message = "email cannot be empty")
     @Email(message = "email is not correct")
     private String email;

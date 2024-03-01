@@ -12,7 +12,7 @@ import java.util.*;
 @Repository
 public class UserRepository implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
-    private int id = 0;
+    private Long id = 0L;
 
     @Override
     public User createUser(User user) {
@@ -31,7 +31,7 @@ public class UserRepository implements UserStorage {
     }
 
     @Override
-    public User getUserById(long id) {
+    public User getUserById(Long id) {
         if (!users.containsKey(id)) {
             log.error("User with id = {} not found", id);
             throw new NotFoundException(String.format("User with id = %d not found", id));
@@ -40,7 +40,7 @@ public class UserRepository implements UserStorage {
     }
 
     @Override
-    public User updateUser(long id, Map<String, String> updatedParams) {
+    public User updateUser(Long id, Map<String, String> updatedParams) {
         if (!users.containsKey(id)) {
             log.error("User with id = {} not found", id);
             throw new NotFoundException(String.format("User with id = %d not found", id));
@@ -65,7 +65,7 @@ public class UserRepository implements UserStorage {
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(Long id) {
         users.remove(id);
     }
 

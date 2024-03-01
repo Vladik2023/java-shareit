@@ -10,11 +10,11 @@ import java.util.Map;
 public interface ItemStorage {
     Item createItem(Item item);
 
-    List<Item> getAllItemsForOwner(long ownerId);
+    List<Item> getAllItemsForOwner(Long ownerId);
 
-    Item getItemById(long id);
+    Item getItemById(Long id);
 
-    Item updateItem(long id, Map<String, String> updatedParams);
+    Item updateItem(Long id, Map<String, String> updatedParams);
 
     List<Item> searchItems(String text);
 }
