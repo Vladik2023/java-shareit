@@ -1,19 +1,14 @@
 package ru.practicum.shareit.user.dto;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 import ru.practicum.shareit.user.User;
 
-@Mapper
-public interface UserMapper {
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+public class UserMapper {
+    public static UserDto convertToDto(User user) {
+        return new UserDto(user.getId(), user.getEmail(), user.getName());
+    }
 
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "email", source = "email")
-    UserDto convertToDto(User user);
-
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "email", source = "email")
-    User convertToEntity(UserDto userDto);
+    public static User convertToEntity(UserDto userDto) {
+        return new User(userDto.getId(), userDto.getEmail(), userDto.getName());
+    }
 }
+

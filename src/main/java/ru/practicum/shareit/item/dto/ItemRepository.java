@@ -32,7 +32,6 @@ public class ItemRepository implements ItemStorage {
     }
 
     @Override
-    public Item getItemById(Long id) {
     public Optional<Item> getItemById(Long id) {
         if (!items.containsKey(id)) {
             log.error("Item with id = {} not found", id);

@@ -33,8 +33,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item getItemById(Long id) {
-        return itemStorage.getItemById(id);
-    public Item getItemById(Long id) {
         return itemStorage.getItemById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Item with id = %d not found", id)));
     }

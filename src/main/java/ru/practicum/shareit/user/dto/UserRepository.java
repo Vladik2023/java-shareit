@@ -3,7 +3,6 @@ package ru.practicum.shareit.user.dto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.AlreadyExistException;
-import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.User;
 
 import java.util.*;
