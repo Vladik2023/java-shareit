@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserCreateDto;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -21,34 +22,34 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> getAll() {
+    public ResponseEntity<List<UserDto>> getAll() {
         log.info("Get all users");
-        return userService.getAll();
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @GetMapping("/{id}")
-    public UserDto get(@PathVariable("id") long userId) {
+    public ResponseEntity<UserDto> get(@PathVariable("id") long userId) {
         log.info("Get user by id {}", userId);
-        return userService.get(userId);
+        return ResponseEntity.ok(userService.get(userId));
     }
 
     @PostMapping
-    public UserDto create(@Valid @RequestBody UserCreateDto user) {
+    public ResponseEntity<UserDto> create(@Valid @RequestBody UserCreateDto user) {
         log.info("Create user {}", user);
-        return userService.create(user);
+        return ResponseEntity.ok(userService.create(user));
     }
 
     @PatchMapping("/{id}")
-    public UserDto update(@PathVariable("id") long userId,
-                          @Valid @RequestBody UserUpdateDto user) {
+    public ResponseEntity<UserDto> update(@PathVariable("id") long userId,
+                                          @Valid @RequestBody UserUpdateDto user) {
         log.info("Update user {}, data {}", user, user);
-        return userService.update(userId, user);
+        return ResponseEntity.ok(userService.update(userId, user));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") long userId) {
+    public ResponseEntity<Void> delete(@PathVariable("id") long userId) {
         log.info("Delete user by id {}", userId);
         userService.delete(userId);
+        return ResponseEntity.noContent().build();
     }
 }
