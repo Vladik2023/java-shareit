@@ -1,74 +1,31 @@
 package ru.practicum.shareit.booking.mapper;
 
-import org.springframework.stereotype.Component;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingItemDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.util.BookingStatus;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
-import java.util.stream.Collectors;
+@Mapper(componentModel = "spring", imports = {BookingStatus.class})
 
-@Component
-public class BookingMapper {
+public interface BookingMapper {
 
-    public Booking toBooking(Long userId, BookingCreateDto bookingCreateDto) {
-        return Booking.builder()
-                .startDate(bookingCreateDto.getStart())
-                .endDate(bookingCreateDto.getEnd())
-                .status(BookingStatus.WAITING)
-                .item(Item.builder()
-                        .id(bookingCreateDto.getItemId())
-                        .build())
-                .booker(User.builder()
-                        .id(userId)
-                        .build())
-                .build();
-    }
+    @Mapping(target = "item.id", source = "bookingCreateDto.itemId")
+    @Mapping(source = "userId", target = "booker.id")
+    @Mapping(target = "startDate", source = "bookingCreateDto.start")
+    @Mapping(target = "endDate", source = "bookingCreateDto.end")
+    @Mapping(target = "status", expression = "java(BookingStatus.WAITING)")
+    Booking toBooking(Long userId, BookingCreateDto bookingCreateDto);
 
-    public BookingDto toBookingDto(Booking booking) {
-        return BookingDto.builder()
-                .id(booking.getId())
-                .start(booking.getStartDate())
-                .end(booking.getEndDate())
-                .booker(UserDto.builder()
-                        .id(booking.getBooker().getId())
-                        .name(booking.getBooker().getName())
-                        .email(booking.getBooker().getEmail())
-                        .build())
-                .status(booking.getStatus())
-                .item(ItemDto.builder()
-                        .id(booking.getItem().getId())
-                        .name(booking.getItem().getName())
-                        .description(booking.getItem().getDescription())
-                        .available(booking.getItem().getAvailable())
-                        .build())
-                .build();
-    }
-
-    public List<BookingDto> toBookingDto(List<Booking> bookings) {
-        return bookings.stream()
-                .map(this::toBookingDto)
-                .collect(Collectors.toList());
-    }
-
-    public BookingItemDto toBookingItemDto(Booking booking) {
-        return BookingItemDto.builder()
-                .id(booking.getId())
-                .bookerId(booking.getBooker().getId())
-                .startDate(booking.getStartDate())
-                .endDate(booking.getEndDate())
-                .build();
-    }
-
-    public List<BookingItemDto> toBookingItemDto(List<Booking> bookings) {
-        return bookings.stream()
-                .map(this::toBookingItemDto)
-                .collect(Collectors.toList());
-    }
+    @Mapping(source = "startDate", target = "start")
+    @Mapping(source = "endDate", target = "end")
+    BookingDto toBookingDto(Booking booking);
+    List<BookingDto> toBookingDto(List<Booking> bookings);
+    @Mapping(target = "bookerId", source = "booker.id")
+    BookingItemDto toBookingItemDto(Booking booking);
+    List<BookingItemDto> toBookingItemDto(List<Booking> bookings);
 }

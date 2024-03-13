@@ -63,7 +63,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> getAll(Long userId) {
 
-        Map<Long, ItemDto> itemMap = new HashMap<>(itemMapper.toItemDto(itemRepository.findAllByOwnerId(userId)));
+        Map<Long, ItemDto> itemMap = new HashMap<>(itemRepository.findAllByOwnerId(userId).stream()
+                .map(itemMapper::toItemDto)
+                .collect(Collectors.toMap(ItemDto::getId, itemDto -> itemDto)));
 
         List<Long> itemIds = itemMap.values().stream().map(ItemDto::getId).collect(Collectors.toList());
 
