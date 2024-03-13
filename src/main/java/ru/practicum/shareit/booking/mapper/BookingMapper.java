@@ -10,6 +10,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.util.BookingStatus;
 
 import java.util.List;
+
 @Mapper(componentModel = "spring", imports = {BookingStatus.class})
 
 public interface BookingMapper {
@@ -24,8 +25,11 @@ public interface BookingMapper {
     @Mapping(source = "startDate", target = "start")
     @Mapping(source = "endDate", target = "end")
     BookingDto toBookingDto(Booking booking);
+
     List<BookingDto> toBookingDto(List<Booking> bookings);
+
     @Mapping(target = "bookerId", source = "booker.id")
     BookingItemDto toBookingItemDto(Booking booking);
+
     List<BookingItemDto> toBookingItemDto(List<Booking> bookings);
 }
