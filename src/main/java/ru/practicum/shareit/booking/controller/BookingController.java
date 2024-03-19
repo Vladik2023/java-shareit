@@ -13,6 +13,7 @@ import ru.practicum.shareit.pagination.PaginationCustom;
 import javax.validation.Valid;
 import java.util.List;
 
+
 @Slf4j
 @RestController
 @RequestMapping(path = "/bookings")
