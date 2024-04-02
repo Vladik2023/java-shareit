@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import ru.practicum.shareit.exception.exeption.NotValidRequestException;
+import ru.practicum.shareit.exception.exeption.InvalidRequestException;
 
 class PaginationCustomTest {
 
@@ -28,11 +28,11 @@ class PaginationCustomTest {
 
     @Test
     void testGetPageableFromIndex2() {
-        assertThrows(NotValidRequestException.class, () -> PaginationCustom.getPageableFromIndex(0, 0));
+        assertThrows(InvalidRequestException.class, () -> PaginationCustom.getPageableFromIndex(0, 0));
     }
 
     @Test
     void testGetPageableFromIndex3() {
-        assertThrows(NotValidRequestException.class, () -> PaginationCustom.getPageableFromIndex(-1, 1));
+        assertThrows(InvalidRequestException.class, () -> PaginationCustom.getPageableFromIndex(-1, 1));
     }
 }

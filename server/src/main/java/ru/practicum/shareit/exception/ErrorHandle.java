@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.exeption.NoSuchEnumException;
 import ru.practicum.shareit.exception.exeption.NotFoundException;
-import ru.practicum.shareit.exception.exeption.NotValidRequestException;
+import ru.practicum.shareit.exception.exeption.InvalidRequestException;
 import ru.practicum.shareit.exception.model.ErrorResponse;
 
 @RestControllerAdvice
@@ -46,7 +46,7 @@ public class ErrorHandle {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleNotValidException(NotValidRequestException e) {
+    public ErrorResponse handleNotValidException(InvalidRequestException e) {
         log.warn(e.getMessage());
         return new ErrorResponse(e.getMessage());
     }

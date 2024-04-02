@@ -9,7 +9,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.util.BookingStatus;
 import ru.practicum.shareit.exception.exeption.NotFoundException;
-import ru.practicum.shareit.exception.exeption.NotValidRequestException;
+import ru.practicum.shareit.exception.exeption.InvalidRequestException;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -165,7 +165,7 @@ public class ItemServiceImpl implements ItemService {
                 userId, itemId, BookingStatus.APPROVED);
 
         if (bookings.isEmpty()) {
-            throw new NotValidRequestException("Объект не доступен");
+            throw new InvalidRequestException("Объект не доступен");
         }
 
         Comment comment = commentRepository.save(commentMapper.toComment(userId, itemId, commentCreateDto));

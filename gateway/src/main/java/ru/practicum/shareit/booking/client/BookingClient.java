@@ -10,7 +10,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.baseclient.BaseClient;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.booking.util.BookingState;
-import ru.practicum.shareit.exception.exeption.NotValidRequestException;
+import ru.practicum.shareit.exception.exeption.InvalidRequestException;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class BookingClient extends BaseClient {
 
     public ResponseEntity<Object> create(long userId, BookingCreateDto bookingCreateDto) {
         if (!bookingCreateDto.getStart().isBefore(bookingCreateDto.getEnd())) {
-            throw new NotValidRequestException("Дата окончания должна быть больше даты начала");
+            throw new InvalidRequestException("Дата окончания должна быть больше даты начала");
         }
         return exchange("", HttpMethod.POST, bookingCreateDto, getHeaders(userId), null);
     }

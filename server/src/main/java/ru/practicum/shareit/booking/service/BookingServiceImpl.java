@@ -12,7 +12,7 @@ import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.util.BookingState;
 import ru.practicum.shareit.booking.util.BookingStatus;
 import ru.practicum.shareit.exception.exeption.NotFoundException;
-import ru.practicum.shareit.exception.exeption.NotValidRequestException;
+import ru.practicum.shareit.exception.exeption.InvalidRequestException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
@@ -54,7 +54,7 @@ public class BookingServiceImpl implements BookingService {
 
         if (approved) {
             if (booking.getStatus().equals(BookingStatus.APPROVED)) {
-                throw new NotValidRequestException("Повторное потверждение не допустимо");
+                throw new InvalidRequestException("Повторное потверждение не допустимо");
             }
             booking.setStatus(BookingStatus.APPROVED);
         } else {
@@ -145,10 +145,10 @@ public class BookingServiceImpl implements BookingService {
 
     public void validationCreateBooking(User user, Item item, Booking booking) {
         if (!item.getAvailable()) {
-            throw new NotValidRequestException("Объект не доступен");
+            throw new InvalidRequestException("Объект не доступен");
         }
         if (!booking.getStartDate().isBefore(booking.getEndDate())) {
-            throw new NotValidRequestException("Дата окончания должна быть больше даты начала");
+            throw new InvalidRequestException("Дата окончания должна быть больше даты начала");
         }
         if (item.getOwner().getId().equals(user.getId())) {
             throw new NotFoundException("Объект не доступен");

@@ -31,7 +31,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.util.BookingStatus;
 import ru.practicum.shareit.exception.exeption.NotFoundException;
-import ru.practicum.shareit.exception.exeption.NotValidRequestException;
+import ru.practicum.shareit.exception.exeption.InvalidRequestException;
 import ru.practicum.shareit.item.dto.CommentCreateDto;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
@@ -825,7 +825,7 @@ class ItemServiceImplTest {
         CommentCreateDto commentCreateDto = new CommentCreateDto();
         commentCreateDto.setText("Text");
 
-        assertThrows(NotValidRequestException.class, () -> itemServiceImpl.createComment(1L, 1L, commentCreateDto));
+        assertThrows(InvalidRequestException.class, () -> itemServiceImpl.createComment(1L, 1L, commentCreateDto));
         verify(itemRepository).findById(Mockito.<Long>any());
         verify(bookingRepository).findAllByEndDateBeforeAndBooker_idAndItem_idAndStatus(Mockito.<LocalDateTime>any(),
                 Mockito.<Long>any(), Mockito.<Long>any(), eq(BookingStatus.APPROVED));

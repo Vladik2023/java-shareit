@@ -32,7 +32,7 @@ import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.util.BookingState;
 import ru.practicum.shareit.booking.util.BookingStatus;
 import ru.practicum.shareit.exception.exeption.NotFoundException;
-import ru.practicum.shareit.exception.exeption.NotValidRequestException;
+import ru.practicum.shareit.exception.exeption.InvalidRequestException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
@@ -135,7 +135,7 @@ class BookingServiceImplTest {
         bookingCreateDto.setItemId(1L);
         bookingCreateDto.setStart(LocalDate.of(1970, 1, 1).atStartOfDay());
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.create(1L, bookingCreateDto));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.create(1L, bookingCreateDto));
         verify(bookingMapper).toBooking(Mockito.<Long>any(), Mockito.<BookingCreateDto>any());
         verify(itemService).validationFindItemById(Mockito.<Long>any());
         verify(userService).validationFindUserById(Mockito.<Long>any());
@@ -149,14 +149,14 @@ class BookingServiceImplTest {
         user.setName("Name");
         when(userService.validationFindUserById(Mockito.<Long>any())).thenReturn(user);
         when(itemService.validationFindItemById(Mockito.<Long>any()))
-                .thenThrow(new NotValidRequestException("An error occurred"));
+                .thenThrow(new InvalidRequestException("An error occurred"));
 
         BookingCreateDto bookingCreateDto = new BookingCreateDto();
         bookingCreateDto.setEnd(LocalDate.of(1970, 1, 1).atStartOfDay());
         bookingCreateDto.setItemId(1L);
         bookingCreateDto.setStart(LocalDate.of(1970, 1, 1).atStartOfDay());
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.create(1L, bookingCreateDto));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.create(1L, bookingCreateDto));
         verify(itemService).validationFindItemById(Mockito.<Long>any());
         verify(userService).validationFindUserById(Mockito.<Long>any());
     }
@@ -300,9 +300,9 @@ class BookingServiceImplTest {
         Optional<Booking> ofResult = Optional.of(booking);
         when(bookingRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
         when(itemService.validationOwnerUserById(Mockito.<Long>any(), Mockito.<Long>any()))
-                .thenThrow(new NotValidRequestException("An error occurred"));
+                .thenThrow(new InvalidRequestException("An error occurred"));
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.approveBooking(1L, 1L, true));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.approveBooking(1L, 1L, true));
         verify(bookingRepository).findById(Mockito.<Long>any());
         verify(itemService).validationOwnerUserById(Mockito.<Long>any(), Mockito.<Long>any());
     }
@@ -362,7 +362,7 @@ class BookingServiceImplTest {
         item2.setOwner(owner2);
         item2.setRequest(request2);
         Booking booking = mock(Booking.class);
-        when(booking.getStatus()).thenThrow(new NotValidRequestException("An error occurred"));
+        when(booking.getStatus()).thenThrow(new InvalidRequestException("An error occurred"));
         when(booking.getItem()).thenReturn(item2);
         doNothing().when(booking).setBooker(Mockito.<User>any());
         doNothing().when(booking).setEndDate(Mockito.<LocalDateTime>any());
@@ -404,7 +404,7 @@ class BookingServiceImplTest {
         item3.setRequest(request3);
         when(itemService.validationOwnerUserById(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(item3);
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.approveBooking(1L, 1L, true));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.approveBooking(1L, 1L, true));
         verify(bookingRepository).findById(Mockito.<Long>any());
         verify(booking).getItem();
         verify(booking).getStatus();
@@ -502,7 +502,7 @@ class BookingServiceImplTest {
         user.setName("Name");
         when(userService.validationFindUserById(Mockito.<Long>any())).thenReturn(user);
         when(bookingMapper.toBookingDto(Mockito.<Booking>any()))
-                .thenThrow(new NotValidRequestException("An error occurred"));
+                .thenThrow(new InvalidRequestException("An error occurred"));
 
         User booker = new User();
         booker.setEmail("jane.doe@example.org");
@@ -543,7 +543,7 @@ class BookingServiceImplTest {
         Optional<Booking> ofResult = Optional.of(booking);
         when(bookingRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.getById(1L, 1L));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.getById(1L, 1L));
         verify(bookingRepository).findById(Mockito.<Long>any());
         verify(bookingMapper).toBookingDto(Mockito.<Booking>any());
         verify(userService).validationFindUserById(Mockito.<Long>any());
@@ -578,9 +578,9 @@ class BookingServiceImplTest {
         user.setName("Name");
         when(userService.validationFindUserById(Mockito.<Long>any())).thenReturn(user);
         when(bookingRepository.findAllByItem_Owner_idOrderByStartDateDesc(Mockito.<Long>any(), Mockito.<Pageable>any()))
-                .thenThrow(new NotValidRequestException("An error occurred"));
+                .thenThrow(new InvalidRequestException("An error occurred"));
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.getAll(1L, BookingState.ALL, true, null));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.getAll(1L, BookingState.ALL, true, null));
         verify(bookingRepository).findAllByItem_Owner_idOrderByStartDateDesc(Mockito.<Long>any(), Mockito.<Pageable>any());
         verify(userService).validationFindUserById(Mockito.<Long>any());
     }
@@ -732,9 +732,9 @@ class BookingServiceImplTest {
 
     @Test
     void testValidateFindBookingById3() {
-        when(bookingRepository.findById(Mockito.<Long>any())).thenThrow(new NotValidRequestException("An error occurred"));
+        when(bookingRepository.findById(Mockito.<Long>any())).thenThrow(new InvalidRequestException("An error occurred"));
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.validateFindBookingById(1L));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.validateFindBookingById(1L));
         verify(bookingRepository).findById(Mockito.<Long>any());
     }
 
@@ -806,7 +806,7 @@ class BookingServiceImplTest {
         booking.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         booking.setStatus(BookingStatus.WAITING);
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.validationCreateBooking(user, item, booking));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.validationCreateBooking(user, item, booking));
     }
 
     @Test
@@ -886,7 +886,7 @@ class BookingServiceImplTest {
         booking.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         booking.setStatus(BookingStatus.WAITING);
 
-        assertThrows(NotValidRequestException.class, () -> bookingServiceImpl.validationCreateBooking(user, item, booking));
+        assertThrows(InvalidRequestException.class, () -> bookingServiceImpl.validationCreateBooking(user, item, booking));
         verify(item).getAvailable();
         verify(item).setAvailable(Mockito.<Boolean>any());
         verify(item).setDescription(eq("The characteristics of someone or something"));
